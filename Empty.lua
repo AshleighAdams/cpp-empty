@@ -1,3 +1,6 @@
+dofile( "ThirdParty/qtpresets.lua" )
+EnableOption( "qt-shared" )
+
 solution "Empty"
 	language "C++"
 	location "Projects"
@@ -22,18 +25,19 @@ solution "Empty"
 		
 		kind "ConsoleApp" -- StaticLib, SharedLib
 		
-		buildoptions { "`pkg-config --cflags QtGui QtCore`" } -- Qt includes
-		linkoptions { "`pkg-config --libs QtGui QtCore`" }
+		
 
 		configuration "windows"
 			libdirs { "ThirdParty/Libraries" }
 			includedirs { "ThirdParty/Include" }
 			defines { "WINDOWS" }
-
+		
 		configuration "linux"
 			buildoptions { "-std=c++11" }
 			links { "pthread" } -- for std::thread
 			defines { "LINUX" }
+			buildoptions { "`pkg-config --cflags QtGui QtCore`" } -- Qt includes
+			linkoptions { "`pkg-config --libs QtGui QtCore`" }
 			
 		configuration "Debug"
 			targetsuffix "_d"
@@ -44,3 +48,10 @@ solution "Empty"
 			excludes { } -- "Source/WindowsX.cpp"
 		configuration "windows"
 			excludes { }
+			
+--$(Configurations)
+local mocFiles                          = { } --{ "$(ProjectName)Frame.hpp" }
+local qrcFiles                          = { os.matchfiles( "*.qrc" ) }
+local uiFiles                           = { os.matchfiles( "*.ui" ) }
+local libsToLink                        = { "Core", "Gui" }
+qt.Configure( mocFiles, qrcFiles, uiFiles, libsToLink )
