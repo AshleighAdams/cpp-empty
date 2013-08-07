@@ -22,6 +22,9 @@ solution "Empty"
 		
 		kind "ConsoleApp" -- StaticLib, SharedLib
 		
+		buildoptions { "`pkg-config --cflags QtGui QtCore`" } -- Qt includes
+		linkoptions { "`pkg-config --libs QtGui QtCore`" }
+
 		configuration "windows"
 			libdirs { "ThirdParty/Libraries" }
 			includedirs { "ThirdParty/Include" }
