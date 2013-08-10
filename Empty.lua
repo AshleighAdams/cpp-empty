@@ -2,11 +2,11 @@ solution "Empty"
 	language "C++"
 	location "Projects"
 	targetdir "Binaries"
-	configurations { "Release", "Debug" }
+	configurations { "SharedRelease", "SharedDebug", "StaticRelease", "StaticDebug", "Test" }
 
-	configuration "Debug"
+	configuration "SharedDebug or StaticDebug or Test"
 		flags { "Symbols" }
-	configuration "Release"
+	configuration "SharedRelease or StaticRelease"
 		flags { "Optimize" }
 	
 	project "Empty"
@@ -20,7 +20,12 @@ solution "Empty"
 			["Header Files"] = "Source/**.hpp"
 		}
 		
-		kind "ConsoleApp" -- StaticLib, SharedLib
+		configuration "SharedRelease or SharedDebug"
+			kind "SharedLib"
+		configuration "StaticRelease or StaticDebug"
+			kind "StaticLib"
+		configuration "Test"
+			kind "ConsoleApp"
 		
 		configuration "windows"
 			libdirs { "ThirdParty/Libraries" }
@@ -32,7 +37,7 @@ solution "Empty"
 			links { "pthread" } -- for std::thread
 			defines { "LINUX" }
 			
-		configuration "Debug"
+		configuration "SharedDebug or StaticDebug"
 			targetsuffix "_d"
 			
 		links { } -- Such as { "GL", "X11" }
