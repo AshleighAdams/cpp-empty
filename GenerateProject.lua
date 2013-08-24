@@ -19,7 +19,7 @@ local cleans = {
 }
 
 --------- clean
-local clean_cmd = string.format("%s %s --file=" .. project_file .. " %s", table.concat(premake_options, " "), premake, "clean")
+local clean_cmd = string.format("%s %s --file=" .. project_file .. " %s", premake, table.concat(premake_options, " "), "clean")
 
 if os.execute(clean_cmd) ~= 0 then -- cleaning failed
 	print("cleaning failed!")
